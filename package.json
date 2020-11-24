@@ -1,5 +1,5 @@
 {
-  "name": "@baidu/san-ssr-plugin",
+  "name": "san-ssr-plugin",
   "version": "1.0.0",
   "description": "",
   "main": "dist/plugin.js",
