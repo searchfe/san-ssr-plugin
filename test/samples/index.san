@@ -1,0 +1,106 @@
+<style module>
+    .color-gray {
+        color: #666;
+        background: url(./aaa.svg)
+    }
+    .color-red {
+        background: url(./aaa.svg)
+    }
+    .color-green {
+        background: url(./bbb.svg)
+    }
+</style>
+<template>
+<div>
+    <h3 class="t">
+        <a href="{{ titleUrl | raw }}" 
+            data-click="{
+                'F':'{{ classicInfo.strategyStr[0] }}',
+                'F1':'{{ classicInfo.strategyStr[1] }}',
+                'F2':'{{ classicInfo.strategyStr[2] }}',
+                'F3':'{{ classicInfo.strategyStr[3] }}',
+                'T':'{{ serverTime }}',
+                'y':'{{ classicInfo.identifyStr }}'
+                ,'rsv_gwlink':'{{ officialFlag ? 1 : 0}}'
+            }"
+            target="_blank">
+            {{ title | hilight:2 | raw }}
+        </a>
+        <a s-if="officialFlag" 
+            href="http://trust.baidu.com/vstar/official/intro?type=gw" 
+            target="_blank" 
+            class="OP_LOG_LINK c-text c-text-public c-text-mult c-gap-icon-left">
+            官方
+        </a>
+    </h3>
+    <div class="f13">
+        <a target="_blank" href="{{ titleUrl | raw }}" class="c-showurl">
+            {{ showUrl }}asdasdasd
+        </a>
+        <div class="c-tools" 
+            id="{{ toolsId }}" 
+            data-tools='{"title":"{{ title }}","url":"{{ titleUrl }}"}'>
+            <a class="c-tip-icon">
+                <i class="c-icon c-icon-triangle-down-g"></i>
+            </a>
+        </div>
+        <span s-if="kbShowStyle" class="c-pingjia">&nbsp;-&nbsp;
+            <a href="{{ kbUrl|raw }}" 
+                target="_blank" 
+                class="m" 
+                data-click="{'rsv_comments':'1'}" 
+                data-from="{{ kbFrom }}">
+                {{ kbShowStyle }}
+            </a>
+        </span>
+    </div>
+    <p class="color-gray">
+        由于该网站的robots.txt文件存在限制指令（限制搜索引擎抓取），系统无法提供该页面的内容描述&nbsp;-&nbsp;
+        <a href="{{ robotsUrl|raw }}"
+            target="_blank">
+            了解详情
+        </a>
+    </p>
+</div>
+</template>
+
+<script lang="ts">
+import {Component} from 'san';
+import AAA from './aaa.san';
+
+export default class ResultComponent extends Component {
+    initData() {
+        return {
+            officialFlag: false,
+            title: '',
+            titleUrl: '',
+            extQuery: '',
+            kbShowStyle: '',
+            kbUrl: '',
+            kbFrom: '',
+            showUrl: '',
+            toolsId: '',
+            robotsUrl: '',
+            classicInfo: []
+        };
+    }
+
+    inited() {
+        let str = 'se_st_robots inited';
+        console.log(str);
+    }
+
+    created() {
+        console.log('se_st_robots created');
+    }
+
+    attached() {
+        console.log('se_st_robots attached');
+    }
+
+    detached() {
+        console.log('se_st_robots detached');
+    }
+}
+
+</script>
