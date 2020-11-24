@@ -4,6 +4,10 @@ San-ssr Webpack 插件，用于将 `.san` 编译为可在 Node.js 中执行的 J
 
 需要配合 [san-loader](https://github.com/ecomfe/san-loader) 一起使用。
 
+![Language](https://img.shields.io/badge/-TypeScript-blue.svg)
+[![npm package](https://img.shields.io/npm/v/san-ssr-plugin.svg)](https://www.npmjs.org/package/san-ssr-plugin)
+
+
 ## 快速开始
 
 ```typescript
