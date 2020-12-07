@@ -17,8 +17,10 @@
     "@types/gulp": "^4.0.7",
     "@types/gulp-babel": "^6.1.29",
     "de-indent": "^1.0.2",
-    "hash-sum": "^2.0.0",
-    "san-ssr": "^4.0.1"
+    "hash-sum": "^2.0.0"
+  },
+  "peerDependencies": {
+    "san-ssr": ">1.0.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint",
