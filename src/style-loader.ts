@@ -67,6 +67,9 @@ function extractCssResult(content: string, loaderContext: loader.LoaderContext, 
                     return;
                 }
 
+                // __webpack_public_path__ 在下面 eval 的时候会用到
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const __webpack_public_path__ = loaderContext._compiler.options.output?.publicPath || '';
                 let path = '';
 
                 // 这里严重依赖 file-loader 的输出格式:
