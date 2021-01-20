@@ -56,6 +56,7 @@ function call(tsFilePath: string, fileContent: string, context: string, sanSsrOp
         filePath: tsFilePath,
         fileContent,
     }, 'js', {
+        ...sanSsrOptions,
         ssrOnly,
         renderFunctionName: 'originRender',
     });
