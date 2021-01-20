@@ -1,18 +1,24 @@
 import {styleStore} from './styles-store';
 
-import type { loader } from 'webpack';
+import type {loader} from 'webpack';
 import ___CSS_LOADER_GET_URL_IMPORT___ from 'css-loader/dist/runtime/getUrl';
 
+interface CssRes {
+    exports: {
+        [id: number]: string[];
+        locals: Record<string, string>;
+    };
+};
+
 export default function (this: loader.LoaderContext, content: string) {
-    const loaderContext = this;
-    const callback = loaderContext.async();
+    const callback = this.async();
 
-    checkIsAfterCssLoader(loaderContext);
+    checkIsAfterCssLoader(this);
 
-    extractCssResult(content, loaderContext, (cssRes) => {
+    extractCssResult(content, this, cssRes => {
         styleStore.set(this.resourcePath, {
             locals: cssRes.exports.locals,
-            cssCode: cssRes.exports[0][1]
+            cssCode: cssRes.exports[0][1],
         });
 
         callback && callback(undefined, content);
@@ -43,25 +49,24 @@ function checkIsAfterCssLoader(loaderContext: loader.LoaderContext) {
 function extractCssResult(content: string, loaderContext: loader.LoaderContext, callback: (res: CssRes) => void) {
     const fileMap = {} as Record<string, string>;
     const m = content.match(/require\(['"](.*)['"]\)/g)?.map(item => {
-        const r = item.match(/require\(['"](.*)['"]\)/)
+        const r = item.match(/require\(['"](.*)['"]\)/);
         return r && r[1];
     }) || [];
 
-    const pArr = [] as Promise<unknown>[];
+    const pArr = [] as Array<Promise<unknown>>;
 
     m.forEach(req => {
         if (!req || /.js$/.test(req)) {
             return;
         }
 
-        const p = new Promise((resolve, reject) => {
+        const p = new Promise<void>((resolve, reject) => {
             loaderContext.loadModule(req, (err, source) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
-                const __webpack_public_path__ = loaderContext._compiler.options.output?.publicPath || '';
                 let path = '';
 
                 // 这里严重依赖 file-loader 的输出格式:
@@ -70,11 +75,11 @@ function extractCssResult(content: string, loaderContext: loader.LoaderContext, 
 
                 fileMap[req] = path;
                 resolve();
-            })
+            });
         });
 
         pArr.push(p);
-    })
+    });
 
     Promise.all(pArr)
         .then(() => {
@@ -84,21 +89,14 @@ function extractCssResult(content: string, loaderContext: loader.LoaderContext, 
                 if (/css\-loader\/dist\/runtime\/getUrl.js/.test(req)) {
                     return ___CSS_LOADER_GET_URL_IMPORT___;
                 }
-        
+
                 if (fileMap[req]) {
                     return fileMap[req];
                 }
-        
+
                 return () => [];
             });
-        
+
             callback(res);
         });
 }
-
-interface CssRes {
-    exports: {
-        [id: number]: string[];
-        locals: Record<string, string>;
-    }
-};
