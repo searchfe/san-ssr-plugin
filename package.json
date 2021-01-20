@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://meixuguang@icode.baidu.com:8235/baidu/ps-se-fe-tools/san-ssr-plugin"
+    "url": "ssh://git@github.com:searchfe/san-ssr-plugin.git"
   },
-  "author": "meixuguang",
+  "author": "meixg",
   "license": "ISC",
   "dependencies": {
     "@types/gulp": "^4.0.7",
