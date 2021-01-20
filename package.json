@@ -31,13 +31,15 @@
     }
   },
   "devDependencies": {
-    "@types/gulp": "^4.0.7",
-    "@types/gulp-babel": "^6.1.29",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
     "@ecomfe/eslint-config": "^4.0.0",
     "@ecomfe/stylelint-config": "^1.0.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@types/gulp": "^4.0.7",
+    "@types/gulp-babel": "^6.1.29",
     "@types/hash-sum": "^1.0.0",
     "@types/jest": "^26.0.15",
     "@types/webpack": "^4.41.24",
@@ -64,12 +66,12 @@
     "san-loader": "^0.2.0",
     "san-ssr": ">1.0.0",
     "semantic-release": "^17.3.4",
+    "semantic-release-cli": "^5.4.2",
     "style-loader": "^2.0.0",
     "stylelint": "^13.0.0",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5",
-    "webpack": "^4.44.2",
-    "semantic-release-cli": "^5.4.2"
+    "webpack": "^4.44.2"
   }
 }
