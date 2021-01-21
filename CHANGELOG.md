@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.2...v1.1.3) (2021-01-21)
+
+
+### Bug Fixes
+
+*  build before release ([f010e62](https://github.com/searchfe/san-ssr-plugin/commit/f010e62ec45401dd3313957bea0c51343d7d163b))
+
 ## [1.1.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.1...v1.1.2) (2021-01-20)
 
 
