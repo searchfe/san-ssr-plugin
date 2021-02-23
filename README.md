@@ -47,12 +47,12 @@ export default {
 npm run test
 ```
 
-## Options
+<!-- ## Options
 
 ## 实现原理
 
 ## 如何贡献
 
-## 讨论
+## 讨论 -->
 
 
