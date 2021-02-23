@@ -7,7 +7,7 @@ const config: Config.InitialOptions = {
     rootDir: '.',
     collectCoverage: true,
     collectCoverageFrom: [
-        'src/**/!(*.d).{js,ts}',
+        'src/**/!(html-parser)!(*.d).{js,ts}',
     ],
     coverageDirectory: 'test/coverage',
 };
