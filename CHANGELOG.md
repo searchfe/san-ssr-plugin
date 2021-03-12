@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.3...v1.1.4) (2021-03-12)
+
+
+### Bug Fixes
+
+* 多次执行时，loader 会添加多次 ([657bb08](https://github.com/searchfe/san-ssr-plugin/commit/657bb082225b4217d972b8e47c1c56fbbfc84688))
+
 ## [1.1.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.2...v1.1.3) (2021-01-21)
 
 
