@@ -44,15 +44,20 @@ export default class SanPhpLoaderPlugin {
     runtimeHelperOutput: string;
     outputPath: string;
     sanSsrOptions: sanSsrOptions;
+    initialized: boolean;
     constructor(options?: PluginOptions) {
         this.runtimeHelperOutput = options?.runtimeHelper?.output || 'runtimeHelpers';
         this.outputPath = options?.output?.path || '';
         this.sanSsrOptions = options?.output || {};
+        this.initialized = false;
     }
     apply(compiler: Compiler) {
 
-        addStyleLoader(compiler);
-        addSanLoader(compiler);
+        if (!this.initialized) {
+            addStyleLoader(compiler);
+            addSanLoader(compiler);
+            this.initialized = true;
+        }
 
         compiler.hooks.compilation.tap(id, compilation => {
             styleStore.clear();
