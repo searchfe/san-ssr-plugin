@@ -1,4 +1,4 @@
-import {styleStore} from './styles-store';
+import {styleStore} from './store';
 
 import type {loader} from 'webpack';
 import ___CSS_LOADER_GET_URL_IMPORT___ from 'css-loader/dist/runtime/getUrl';

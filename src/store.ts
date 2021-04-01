@@ -1,7 +1,8 @@
 import type {ExtractedCssResult} from './types';
 
-class ModulesStyleStore {
-    store: Map<string, ExtractedCssResult[]>;
+class Store<T> {
+    store: Map<string, T[]>;
+    isArray: boolean = false;
 
     constructor() {
         this.store = new Map();
@@ -19,11 +20,14 @@ class ModulesStyleStore {
         return [...this.store.keys()];
     }
 
-    set(id: string, value?: ExtractedCssResult) {
-        const current = this.store.get(id) || [];
+    set(id: string, value?: T) {
+        let current = this.store.get(id) || [];
         value && current.push(value);
         this.store.set(id, current);
     }
 }
 
-export const styleStore = new ModulesStyleStore();
+export type TemplateResult = string;
+
+export const styleStore = new Store<ExtractedCssResult>();
+export const templateStore = new Store<TemplateResult>();

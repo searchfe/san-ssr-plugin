@@ -1,4 +1,4 @@
-import {styleStore} from './styles-store';
+import {styleStore, templateStore} from './store';
 import type {Compiler, RuleSetRule} from 'webpack';
 import {promises as fsPromise} from 'fs';
 import {parseComponent} from './lib/parseComponent';
@@ -77,11 +77,13 @@ export default class SanPhpLoaderPlugin {
                         return;
                     }
                     const styles = styleStore.get(filePath);
+                    const template = templateStore.get(filePath)?.[0];
 
                     const tsRes = compileSanToTs(
                         descriptor,
                         filePath,
                         compiler.context,
+                        template,
                         reportError
                     );
 

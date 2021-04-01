@@ -12,9 +12,9 @@ export function compileSanToTs(
     descriptor: SFCDescriptor,
     filePath: string,
     context: string,
+    template: string | undefined,
     reportError: (err: Error) => void
 ) {
-    const template = descriptor.template?.content;
     const scripts = descriptor.script?.content;
 
     const tsFilePath = changeSanFileExtension(filePath);
@@ -24,7 +24,7 @@ export function compileSanToTs(
         const resCode = compileTypescript(scripts, filePath, {
             tsFilePath,
             context,
-            template: template || '',
+            template: template || descriptor.script?.content || '',
             reportError,
         });
 
