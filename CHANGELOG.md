@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.4...v1.2.0) (2021-04-01)
+
+
+### Features
+
+* template 中引用的静态资源 resolve 成打包后的真实地址 ([ad12609](https://github.com/searchfe/san-ssr-plugin/commit/ad12609e31805a3da090ed49923c3af538a071c7))
+
 ## [1.1.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.3...v1.1.4) (2021-03-12)
 
 
