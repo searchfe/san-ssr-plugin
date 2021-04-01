@@ -1,4 +1,4 @@
-import {styleStore} from '../src/styles-store';
+import {styleStore} from '../src/store';
 
 test('styleStore', async () => {
 
