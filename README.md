@@ -15,11 +15,11 @@ San-ssr Webpack 插件，用于将 `.san` 编译为可在 Node.js 中执行的 J
 ```typescript
 import webpack from 'webpack';
 import SanLoaderPlugin from 'san-loader/lib/plugin';
-import SanPhpLoaderPlugin from 'san-ssr-plugin';
+import SanSSRPlugin from 'san-ssr-plugin';
 
 export default {
     plugins: [
-        new SanPhpLoaderPlugin({
+        new SanSSRPlugin({
             output: {
                 path: 'js',
             }
