@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.2.0...v1.3.0) (2021-06-15)
+
+
+### Features
+
+* 支持自定义 tsConfigPath ([98d62b1](https://github.com/searchfe/san-ssr-plugin/commit/98d62b1885bd8c331e23feb2e4c30c9bebed90bc))
+
 # [1.2.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.1.4...v1.2.0) (2021-04-01)
 
 
