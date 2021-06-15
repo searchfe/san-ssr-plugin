@@ -32,6 +32,9 @@ interface PluginOptions {
         namespace?: string;
     };
 
+    /**
+     * 支持自定义 tsconfig 路径
+     */
     tsConfigPath?: string;
 
     output?: {
