@@ -14,7 +14,7 @@ const {
     readFile,
 } = fsPromise;
 
-const id = 'san-php-loader';
+const id = 'san-ssr-loader';
 interface PluginOptions {
     /**
      * 运行时代码
@@ -34,13 +34,13 @@ interface PluginOptions {
 
     output?: {
         /**
-         * PHP 文件的输出路径，相对于 webpack 设置的 output 目录
+         * 文件的输出路径，相对于 webpack 设置的 output 目录
          */
         path: string;
     } & sanSsrOptions;
 }
 
-export default class SanPhpLoaderPlugin {
+export default class SanSSRLoaderPlugin {
     runtimeHelperOutput: string;
     outputPath: string;
     sanSsrOptions: sanSsrOptions;
