@@ -9,14 +9,17 @@ import type {
 import type {sanSsrOptions} from '../types/san-ssr';
 
 export function callSanSsr(
-    filePath: string,
-    tsCode: string,
+    tsFile: {
+        path: string;
+        content: string;
+    },
     styles: ExtractedCssResult[] | undefined,
     context: string,
     sanSsrOptions: sanSsrOptions,
-    reportError: (err: Error) => void
+    reportError: (err: Error) => void,
+    tsConfigPath?: string
 ) {
-    if (!tsCode) {
+    if (!tsFile.content) {
         reportError(new Error('Ts code must be specified'));
         return;
     }
@@ -27,11 +30,19 @@ export function callSanSsr(
         return pre;
     }, {locals: {}, cssCode: ''} as {locals: Record<string, string>, cssCode: string});
 
-    const tsFilePath = changeSanFileExtension(filePath);
-    let jsCode = call(tsFilePath, tsCode, context, sanSsrOptions);
+    const tsFilePath = changeSanFileExtension(tsFile.path);
+    let jsCode = call(
+        {
+            path: tsFilePath,
+            content: tsFile.content,
+        },
+        context,
+        sanSsrOptions,
+        tsConfigPath
+    );
     const relPath = path.relative(
         context.replace(/[^/]+$/, ''),
-        filePath).replace(/\\/g, '/'
+        tsFile.path).replace(/\\/g, '/'
     );
     const styleId = JSON.stringify(hash(relPath));
     jsCode += makeCustomRenderFunction(
@@ -43,18 +54,29 @@ export function callSanSsr(
     return jsCode;
 }
 
-function call(tsFilePath: string, fileContent: string, context: string, sanSsrOptions: sanSsrOptions) {
-    const tsConfigPath = getDefaultTSConfigPath(context);
+function call(
+    tsFile: {
+        path: string;
+        content: string;
+    },
+    context: string,
+    sanSsrOptions: sanSsrOptions,
+    tsConfigPath?: string
+) {
+    if (!tsConfigPath) {
+        tsConfigPath = getDefaultTSConfigPath(context);
+    }
+
     const project = new SanProject(tsConfigPath);
 
     let ssrOnly = sanSsrOptions.ssrOnly;
     if (typeof sanSsrOptions.ssrOnly === 'function') {
-        ssrOnly = sanSsrOptions.ssrOnly(tsFilePath);
+        ssrOnly = sanSsrOptions.ssrOnly(tsFile.path);
     }
 
     const targetCode = project.compileToSource({
-        filePath: tsFilePath,
-        fileContent,
+        filePath: tsFile.path,
+        fileContent: tsFile.content,
     }, 'js', {
         ...sanSsrOptions,
         ssrOnly,

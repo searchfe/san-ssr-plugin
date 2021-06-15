@@ -32,6 +32,8 @@ interface PluginOptions {
         namespace?: string;
     };
 
+    tsConfigPath?: string;
+
     output?: {
         /**
          * 文件的输出路径，相对于 webpack 设置的 output 目录
@@ -45,10 +47,12 @@ export default class SanSSRLoaderPlugin {
     outputPath: string;
     sanSsrOptions: sanSsrOptions;
     initialized: boolean;
+    tsConfigPath?: string;
     constructor(options?: PluginOptions) {
         this.runtimeHelperOutput = options?.runtimeHelper?.output || 'runtimeHelpers';
         this.outputPath = options?.output?.path || '';
         this.sanSsrOptions = options?.output || {};
+        this.tsConfigPath = options?.tsConfigPath;
         this.initialized = false;
     }
     apply(compiler: Compiler) {
@@ -88,14 +92,17 @@ export default class SanSSRLoaderPlugin {
                     );
 
                     const jsRes = callSanSsr(
-                        filePath,
-                        tsRes,
+                        {
+                            path: filePath,
+                            content: tsRes,
+                        },
                         styles,
                         compiler.context,
                         {
                             ...this.sanSsrOptions,
                         },
-                        reportError
+                        reportError,
+                        this.tsConfigPath
                     );
 
                     if (jsRes) {
