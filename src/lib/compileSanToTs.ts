@@ -24,7 +24,7 @@ export function compileSanToTs(
         const resCode = compileTypescript(scripts, filePath, {
             tsFilePath,
             context,
-            template: template || descriptor.script?.content || '',
+            template: template || descriptor.template?.content || '',
             reportError,
         });
 
