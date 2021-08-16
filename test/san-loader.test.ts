@@ -1,5 +1,5 @@
 import sanLoader from '../src/san-loader';
-import {styleStore} from '../src/store';
+import {Store, StyleStore, TemplateStore} from '../src/store';
 import type {loader} from 'webpack';
 
 test('styleStore', async () => {
@@ -7,11 +7,14 @@ test('styleStore', async () => {
     const env = {
         async: () => (...args: any[]) => mockAsyncCallback(...args),
         resourcePath: '/mock/path',
+        _compilation: {
+            _styleStore: new Store() as StyleStore
+        }
     };
 
     sanLoader.call(env as unknown as loader.LoaderContext, 'mock content');
 
-    expect(styleStore.get('/mock/path')).toStrictEqual([]);
+    expect(env._compilation._styleStore.get('/mock/path')).toStrictEqual([]);
 
     expect(mockAsyncCallback).toHaveBeenCalledTimes(1);
     expect(mockAsyncCallback.mock.calls[0][1]).toBe('mock content');
@@ -25,6 +28,10 @@ test('templateStore', () => {
         async: jest.fn(),
         resourcePath: '/path/to/foo.san',
         loadModule: (...args: any[]) => mockLoadModule(...args),
+        _compilation: {
+            _templateStore: new Store() as TemplateStore,
+            _styleStore: new Store() as StyleStore
+        }
     } as unknown as loader.LoaderContext;
 
     sanLoader.call(mockLoaderContext, `

@@ -1,4 +1,4 @@
-import {styleStore, templateStore} from './store';
+import {Store} from './store';
 import type {Compiler, RuleSetRule} from 'webpack';
 import {promises as fsPromise} from 'fs';
 import {parseComponent} from './lib/parseComponent';
@@ -67,7 +67,14 @@ export default class SanSSRLoaderPlugin {
         }
 
         compiler.hooks.compilation.tap(id, compilation => {
-            styleStore.clear();
+            // @ts-ignore
+            compilation._styleStore = new Store();
+            // @ts-ignore
+            compilation._templateStore = new Store();
+            // @ts-ignore
+            const styleStore = compilation._styleStore;
+            // @ts-ignore
+            const templateStore = compilation._templateStore;
 
             const reportError = (err: Error) => compilation.errors.push(err);
 

@@ -1,6 +1,6 @@
-import type {ExtractedCssResult} from './types';
+import {ExtractedCssResult} from './types';
 
-class Store<T> {
+export class Store<T> {
     store: Map<string, T[]>;
     isArray: boolean = false;
 
@@ -28,6 +28,6 @@ class Store<T> {
 }
 
 export type TemplateResult = string;
+export type StyleStore = Store<ExtractedCssResult>;
+export type TemplateStore = Store<TemplateResult>;
 
-export const styleStore = new Store<ExtractedCssResult>();
-export const templateStore = new Store<TemplateResult>();

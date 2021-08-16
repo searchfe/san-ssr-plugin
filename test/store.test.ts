@@ -1,7 +1,7 @@
-import {styleStore} from '../src/store';
+import {Store, StyleStore} from '../src/store';
 
 test('styleStore', async () => {
-
+    const styleStore = new Store() as StyleStore;
 
     styleStore.set('styleA', {
         cssCode: 'aaa',
