@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.0...v1.3.1) (2021-08-16)
+
+
+### Bug Fixes
+
+* 没有传 template 时，会将 script 作为字符串输出 ([336a1af](https://github.com/searchfe/san-ssr-plugin/commit/336a1af32f7c34590781eaff7e612fa82716688b))
+
 # [1.3.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.2.0...v1.3.0) (2021-06-15)
 
 
