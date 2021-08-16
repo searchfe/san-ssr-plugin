@@ -1,3 +1,11 @@
+## [1.3.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.1...v1.3.2) (2021-08-16)
+
+
+### Bug Fixes
+
+* 使用 template store 获取 key，解决组件中没有 style 不会进行编译的问题 ([bbae0c4](https://github.com/searchfe/san-ssr-plugin/commit/bbae0c4641ab5982b3b678ae222bdbfe95f90bf4))
+* 将 store 与 compilation 进行绑定 ([e3ec2c9](https://github.com/searchfe/san-ssr-plugin/commit/e3ec2c99ffa5e5fef64a8c7610a6c1657999741b))
+
 ## [1.3.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.0...v1.3.1) (2021-08-16)
 
 
