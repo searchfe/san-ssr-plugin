@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.2...v1.3.3) (2021-08-26)
+
+
+### Bug Fixes
+
+* 与 MiniCssExtractPlugin 一起使用时，会多次编译/缺少样式 ([f85c40f](https://github.com/searchfe/san-ssr-plugin/commit/f85c40fa51989549a17febedf91e4d9fa41e24d0))
+
 ## [1.3.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.1...v1.3.2) (2021-08-16)
 
 
