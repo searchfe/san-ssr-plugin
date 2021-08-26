@@ -1,5 +1,6 @@
 import {existsSync} from 'fs';
 import type {loader} from 'webpack';
+import type {StyleStore, TemplateStore} from '../store';
 
 export function makeSet(list: string[], expectsLowerCase?: boolean) {
     const s = new Set(list);
@@ -43,10 +44,6 @@ export function extractRequire(content: string): string[] {
     return filterdModules;
 }
 
-/**
- * 
- * @param content
- */
 export function getFileLoaderExportPromise(this: loader.LoaderContext, req: string) {
     return new Promise<string>((resolve, reject) => {
         this.loadModule(req, (err, source) => {
@@ -68,4 +65,17 @@ export function getFileLoaderExportPromise(this: loader.LoaderContext, req: stri
     });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
+
+export function getRootCompilation(compilation: any) {
+    let root = compilation;
+    while (root.compiler && root.compiler.parentCompilation) {
+        root = root.compiler.parentCompilation;
+    }
+
+    return root as {
+        _styleStore: StyleStore;
+        _templateStore: TemplateStore;
+    };
+}

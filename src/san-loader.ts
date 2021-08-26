@@ -1,12 +1,12 @@
-import {StyleStore, TemplateResult, TemplateStore} from './store';
-import {noop, extractRequire, getFileLoaderExportPromise} from './lib/utils';
+import type {TemplateResult} from './store';
+import {noop, extractRequire, getFileLoaderExportPromise, getRootCompilation} from './lib/utils';
 
 import type {loader} from 'webpack';
 import ___HTML_LOADER_GET_URL_IMPORT___ from 'html-loader/dist/runtime/getUrl';
 
 export default function (this: loader.LoaderContext, content: string) {
-    const styleStore = this._compilation._styleStore as StyleStore;
-    const templateStore = this._compilation._templateStore as TemplateStore;
+    const styleStore = getRootCompilation(this._compilation)._styleStore;
+    const templateStore = getRootCompilation(this._compilation)._templateStore;
     styleStore.set(this.resourcePath);
 
     const callback = this.async();

@@ -1,7 +1,6 @@
-import {StyleStore} from './store';
-
 import type {loader} from 'webpack';
 import ___CSS_LOADER_GET_URL_IMPORT___ from 'css-loader/dist/runtime/getUrl';
+import {getRootCompilation} from './lib/utils';
 
 interface CssRes {
     exports: {
@@ -16,7 +15,7 @@ export default function (this: loader.LoaderContext, content: string) {
     checkIsAfterCssLoader(this);
 
     extractCssResult(content, this, cssRes => {
-        const styleStore = this._compilation._styleStore as StyleStore;
+        const styleStore = getRootCompilation(this._compilation)._styleStore;
         styleStore.set(this.resourcePath, {
             locals: cssRes.exports.locals,
             cssCode: cssRes.exports[0][1],

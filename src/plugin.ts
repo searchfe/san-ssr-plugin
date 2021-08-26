@@ -1,4 +1,4 @@
-import {Store} from './store';
+import {Store, StyleStore, TemplateStore} from './store';
 import type {Compiler, RuleSetRule} from 'webpack';
 import {promises as fsPromise} from 'fs';
 import {parseComponent} from './lib/parseComponent';
@@ -66,20 +66,18 @@ export default class SanSSRLoaderPlugin {
             this.initialized = true;
         }
 
-        compiler.hooks.compilation.tap(id, compilation => {
+        compiler.hooks.thisCompilation.tap(id, compilation => {
+            const styleStore = new Store() as StyleStore;
+            const templateStore = new Store() as TemplateStore;
             // @ts-ignore
-            compilation._styleStore = new Store();
+            compilation._styleStore = styleStore;
             // @ts-ignore
-            compilation._templateStore = new Store();
-            // @ts-ignore
-            const styleStore = compilation._styleStore;
-            // @ts-ignore
-            const templateStore = compilation._templateStore;
+            compilation._templateStore = templateStore;
 
             const reportError = (err: Error) => compilation.errors.push(err);
 
             compilation.hooks.finishModules.tapPromise(id, async () => {
-                const sanFiles = templateStore.getKeys();
+                const sanFiles = styleStore.getKeys();
                 for (const filePath of sanFiles) {
                     const sanFileContent = await readFile(filePath, 'utf-8');
                     const descriptor = parseComponent(sanFileContent);
