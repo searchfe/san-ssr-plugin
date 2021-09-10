@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.3...v1.4.0) (2021-09-10)
+
+
+### Features
+
+* 支持 append 自定义内容到编译结果中 [#4](https://github.com/searchfe/san-ssr-plugin/issues/4) ([a371d37](https://github.com/searchfe/san-ssr-plugin/commit/a371d3758facdb826c6cdd222fb0c6bdb30c425a))
+
 ## [1.3.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.2...v1.3.3) (2021-08-26)
 
 
