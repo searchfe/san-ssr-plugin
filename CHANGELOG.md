@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.0...v1.4.1) (2021-09-10)
+
+
+### Bug Fixes
+
+* [#5](https://github.com/searchfe/san-ssr-plugin/issues/5) ([b8376d5](https://github.com/searchfe/san-ssr-plugin/commit/b8376d5f243280adada1db1cf7c6afb0a25d5bd6))
+
 # [1.4.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.3.3...v1.4.0) (2021-09-10)
 
 
