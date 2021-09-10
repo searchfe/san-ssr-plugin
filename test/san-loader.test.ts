@@ -45,5 +45,5 @@ test('templateStore', () => {
     `);
 
     expect(mockLoadModule).toHaveBeenCalledTimes(1);
-    expect(mockLoadModule.mock.calls[0][0]).toBe('/path/to/foo.san?lang=html&san=&type=template');
+    expect(mockLoadModule.mock.calls[0][0]).toBe('/path/to/foo.san?lang=html&san=&type=template&compileTemplate=none');
 });

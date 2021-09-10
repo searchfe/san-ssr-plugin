@@ -35,7 +35,12 @@ export default {
         rules: [
             {
                 test: /\.san$/,
-                loader: 'san-loader',
+                use: {
+                    loader: 'san-loader',
+                    options: {
+                        compileTemplate: 'aPack'
+                    }
+                }
             },
             {
                 test: /\.svg$/,

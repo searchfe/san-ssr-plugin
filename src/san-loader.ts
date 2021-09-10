@@ -25,6 +25,7 @@ export default function (this: loader.LoaderContext, content: string) {
 
     const pArr = [] as Array<Promise<void>>;
     templateRequireCalls.map(templateRequire => {
+        templateRequire += '&compileTemplate=none';
         this.loadModule(templateRequire, (err, source) => {
             if (err) {
                 return pArr.push(Promise.reject(err));
