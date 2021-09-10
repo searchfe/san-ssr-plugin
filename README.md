@@ -47,6 +47,51 @@ export default {
 npm run test
 ```
 
+## 自定义样式输出格式
+
+san-ssr 本身不负责样式的处理。本插件通过封装 san-ssr 产物（render 函数）的形式处理样式产物：
+
+```javascript
+if (css) {
+    code += 'const originSanSSRRenders = module.exports.sanSSRRenders;\n';
+    code += 'Object.keys(originSanSSRRenders).forEach(renderName => {\n';
+    code += '    originSanSSRRenders[renderName] = makeRender(originSanSSRRenders[renderName]);\n';
+    code += '});\n';
+    code += 'module.exports = Object.assign(sanSSRResolver.getRenderer({id: "default"}), exports)';
+    code += 'function makeRender(originRender) {\n';
+    code += '    return function (data, ...params) {\n';
+    code += '        if (global.__COMPONENT_CONTEXT__) {\n';
+    code += `            global.__COMPONENT_CONTEXT__[${styleId}] = ${JSON.stringify(css)};\n`;
+    code += '        }\n';
+    if (Object.keys(locals).length > 0) {
+        code += '        data[\'$style\'] = {\n';
+        code += `            ${Object.keys(locals).map(item =>
+            `${JSON.stringify(item)}: ${JSON.stringify(locals[item])}`
+        ).join(',')}\n`;
+        code += '        };\n';
+    }
+    code += '        return originRender(data, ...params);\n';
+    code += '    };\n';
+    code += '}\n';
+}
+```
+
+这段代码会添加在产物的最后，作为输出。
+
+如果该内容不能满足要求，使用者可通过 `appendRenderFunction` 选项自行设置该内容:
+
+```javascript
+plugins: [
+    new SanSsrPlugin({
+        appendRenderFunction(styleId: string, css: string = '', locals: Record<string, string>) {
+            return ``;
+        }
+    })
+]
+```
+
+参数的具体内容可参考上方默认的输出。
+
 <!-- ## Options
 
 ## 实现原理

@@ -15,7 +15,7 @@ const {
 } = fsPromise;
 
 const id = 'san-ssr-loader';
-interface PluginOptions {
+export interface PluginOptions {
     /**
      * 运行时代码
      */
@@ -43,6 +43,7 @@ interface PluginOptions {
          */
         path: string;
     } & sanSsrOptions;
+    appendRenderFunction?: (styleId: string, css?: string, locals?: Record<string, string>) => string;
 }
 
 export default class SanSSRLoaderPlugin {
@@ -51,11 +52,13 @@ export default class SanSSRLoaderPlugin {
     sanSsrOptions: sanSsrOptions;
     initialized: boolean;
     tsConfigPath?: string;
+    appendRenderFunction?: PluginOptions['appendRenderFunction'];
     constructor(options?: PluginOptions) {
         this.runtimeHelperOutput = options?.runtimeHelper?.output || 'runtimeHelpers';
         this.outputPath = options?.output?.path || '';
         this.sanSsrOptions = options?.output || {};
         this.tsConfigPath = options?.tsConfigPath;
+        this.appendRenderFunction = options?.appendRenderFunction;
         this.initialized = false;
     }
     apply(compiler: Compiler) {
@@ -110,7 +113,10 @@ export default class SanSSRLoaderPlugin {
                             ...this.sanSsrOptions,
                         },
                         reportError,
-                        this.tsConfigPath
+                        {
+                            tsConfigPath: this.tsConfigPath,
+                            appendRenderFunction: this.appendRenderFunction
+                        }
                     );
 
                     if (jsRes) {

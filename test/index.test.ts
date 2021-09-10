@@ -6,9 +6,19 @@ import {compiler} from './helpers/compiler';
 //     const output = stats.toJson().modules[0].source;
 // })();
 test('Run', async () => {
-    const stats = await compiler('index.san');
+    const randomStr = Math.random().toString(32).slice(2);
+    const {
+        stats,
+        outputContent
+    } = await compiler('index.san', {
+        appendRenderFunction() {
+            return `console.log('${randomStr}')`;
+        }
+    });
 
     expect(!!stats).toBe(true);
+
+    expect(outputContent.includes(randomStr)).toBe(true);
 
     // @ts-ignore
     const output = stats.toJson().modules[0].source;

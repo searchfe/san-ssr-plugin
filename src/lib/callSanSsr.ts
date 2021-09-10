@@ -17,8 +17,15 @@ export function callSanSsr(
     context: string,
     sanSsrOptions: sanSsrOptions,
     reportError: (err: Error) => void,
-    tsConfigPath?: string
+    options?: {
+        tsConfigPath?: string;
+        appendRenderFunction?: typeof makeCustomRenderFunction;
+    }
 ) {
+    const {
+        tsConfigPath,
+        appendRenderFunction = makeCustomRenderFunction
+    } = options || {};
     if (!tsFile.content) {
         reportError(new Error('Ts code must be specified'));
         return;
@@ -45,7 +52,7 @@ export function callSanSsr(
         tsFile.path).replace(/\\/g, '/'
     );
     const styleId = JSON.stringify(hash(relPath));
-    jsCode += makeCustomRenderFunction(
+    jsCode += appendRenderFunction(
         styleId,
         stylesRes?.cssCode,
         stylesRes?.locals || {}
@@ -110,6 +117,7 @@ function makeCustomRenderFunction(
         code += 'Object.keys(originSanSSRRenders).forEach(renderName => {\n';
         code += '    originSanSSRRenders[renderName] = makeRender(originSanSSRRenders[renderName]);\n';
         code += '});\n';
+        code += 'module.exports = Object.assign(sanSSRResolver.getRenderer({id: "default"}), exports)';
         code += 'function makeRender(originRender) {\n';
         code += '    return function (data, ...params) {\n';
         code += '        if (global.__COMPONENT_CONTEXT__) {\n';

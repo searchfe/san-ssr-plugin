@@ -12,6 +12,10 @@ export default function (this: loader.LoaderContext, content: string) {
     const callback = this.async();
     const done = callback ? () => callback(null, content) : noop;
 
+    if (this.resourceQuery && this.resourceQuery.includes('lang=')) {
+        return done();
+    }
+
     const templateRequireCalls = extractRequire(content)
         .filter(req => req.includes('type=template'));
 
