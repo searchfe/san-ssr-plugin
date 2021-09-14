@@ -20,6 +20,7 @@ export default {
         new SanPhpLoaderPlugin({
             output: {
                 path: 'php',
+                // importHelpers: 'san-ssr/dist/runtime/index'
             },
             runtimeHelper: {
                 namespace: 'san\\helperNameSpace',
