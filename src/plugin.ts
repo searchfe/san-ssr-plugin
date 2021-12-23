@@ -176,10 +176,35 @@ function getLoaderByMatch(compiler: Compiler, matchExtension: string) {
  * @param compiler
  */
 function addStyleLoader(compiler: Compiler) {
+    const addedRules = new Set();
     const cssRule = getLoaderByMatch(compiler, 'css');
     addLoader(cssRule);
 
+    addToOptionalRule('less');
+    addToOptionalRule('stylus');
+    addToOptionalRule('styl');
+    addToOptionalRule('sass');
+    addToOptionalRule('scss');
+
+    function addToOptionalRule(rule: string) {
+        let optRule;
+        try {
+            optRule = getLoaderByMatch(compiler, rule);
+        }
+        catch {
+        }
+        if (optRule) {
+            addLoader(optRule);
+        }
+    }
+
     function addLoader(rule: RuleSetRule) {
+        // 防止多次添加
+        if (addedRules.has(rule)) {
+            return;
+        }
+        addedRules.add(rule);
+
         if (rule.oneOf) {
             rule.oneOf.forEach(item => addLoader(item));
             return;
