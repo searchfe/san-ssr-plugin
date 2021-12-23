@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.1...v1.4.2) (2021-12-23)
+
+
+### Bug Fixes
+
+* css 与 less 等规则没有写在一起时，只会给 css 规则增加 loader ([621490a](https://github.com/searchfe/san-ssr-plugin/commit/621490a6a423f721f7341861186fa3171a8a3230))
+
 ## [1.4.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.0...v1.4.1) (2021-09-10)
 
 
