@@ -7,7 +7,6 @@ import ___HTML_LOADER_GET_URL_IMPORT___ from 'html-loader/dist/runtime/getUrl';
 export default function (this: loader.LoaderContext, content: string) {
     const styleStore = getRootCompilation(this._compilation)._styleStore;
     const templateStore = getRootCompilation(this._compilation)._templateStore;
-    styleStore.set(this.resourcePath);
 
     const callback = this.async();
     const done = callback ? () => callback(null, content) : noop;
@@ -22,6 +21,10 @@ export default function (this: loader.LoaderContext, content: string) {
     if (!templateRequireCalls.length) {
         return done();
     }
+
+    // 放在上面两个判断的下面，是因为 watch 编译时，不会被编译的文件可能也会走 loader
+    // 需要判断 san-loader 是否经过了处理，经过处理时再加入到被处理列表中
+    styleStore.set(this.resourcePath);
 
     const pArr = [] as Array<Promise<void>>;
     templateRequireCalls.map(templateRequire => {

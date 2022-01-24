@@ -4,20 +4,28 @@ import type {loader} from 'webpack';
 
 test('styleStore', async () => {
     const mockAsyncCallback = jest.fn();
+
     const env = {
-        async: () => (...args: any[]) => mockAsyncCallback(...args),
         resourcePath: '/mock/path',
         _compilation: {
             _styleStore: new Store() as StyleStore
-        }
-    };
+        },
+        loadModule: () => 1
+    } as any;
+    const content = 'require("./mock/content?type=template")';
 
-    sanLoader.call(env as unknown as loader.LoaderContext, 'mock content');
+    await new Promise(resolve => {
+        env.async = () => (...args: any[]) => {
+            mockAsyncCallback(...args);
+            resolve(0);
+        },
+        sanLoader.call(env as unknown as loader.LoaderContext, content);
+    });
 
     expect(env._compilation._styleStore.get('/mock/path')).toStrictEqual([]);
 
     expect(mockAsyncCallback).toHaveBeenCalledTimes(1);
-    expect(mockAsyncCallback.mock.calls[0][1]).toBe('mock content');
+    expect(mockAsyncCallback.mock.calls[0][1]).toBe(content);
 });
 
 test('templateStore', () => {
