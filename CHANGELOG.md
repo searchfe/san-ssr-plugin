@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.2...v1.4.3) (2022-01-24)
+
+
+### Bug Fixes
+
+* watch 编译时，样式丢失 ([def9e38](https://github.com/searchfe/san-ssr-plugin/commit/def9e38803f3f238640294cd338b4e16d18e9a71))
+
 ## [1.4.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.1...v1.4.2) (2021-12-23)
 
 
