@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.3...v1.4.4) (2022-01-25)
+
+
+### Bug Fixes
+
+* 产物格式错误 ([ea88306](https://github.com/searchfe/san-ssr-plugin/commit/ea88306d7e0b15c02a1e737030e82606b4f5d4a5))
+
 ## [1.4.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.2...v1.4.3) (2022-01-24)
 
 
