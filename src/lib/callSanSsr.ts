@@ -117,7 +117,7 @@ function makeCustomRenderFunction(
         code += 'Object.keys(originSanSSRRenders).forEach(renderName => {\n';
         code += '    originSanSSRRenders[renderName] = makeRender(originSanSSRRenders[renderName]);\n';
         code += '});\n';
-        code += 'module.exports = Object.assign(sanSSRResolver.getRenderer({id: "default"}), exports)';
+        code += 'module.exports = Object.assign(sanSSRResolver.getRenderer({id: "default"}), exports);\n';
         code += 'function makeRender(originRender) {\n';
         code += '    return function (data, ...params) {\n';
         code += '        if (global.__COMPONENT_CONTEXT__) {\n';
