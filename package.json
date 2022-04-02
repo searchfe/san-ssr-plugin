@@ -19,8 +19,8 @@
     "hash-sum": "^2.0.0"
   },
   "peerDependencies": {
-    "san-ssr": ">1.0.0",
-    "san-loader": ">0.3.1"
+    "san-loader": "^0.3.4",
+    "san-ssr": ">1.0.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint",
@@ -64,7 +64,7 @@
     "less-loader": "^7.0.2",
     "lint-staged": "^10.0.0",
     "memfs": "^3.2.0",
-    "san-loader": "^0.3.1",
+    "san-loader": "^0.3.4",
     "san-ssr": ">1.0.0",
     "semantic-release": "^17.3.4",
     "semantic-release-cli": "^5.4.2",

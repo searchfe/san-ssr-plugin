@@ -16,7 +16,10 @@ export default function (this: loader.LoaderContext, content: string) {
 
     extractCssResult(content, this, cssRes => {
         const styleStore = getRootCompilation(this._compilation)._styleStore;
+        const moduleMatch = this.resourceQuery.match(/&module=(\w+)&/);
+        const moduleName = moduleMatch && moduleMatch[1] || undefined;
         styleStore.set(this.resourcePath, {
+            name: moduleName,
             locals: cssRes.exports.locals,
             cssCode: cssRes.exports[0][1],
         });
