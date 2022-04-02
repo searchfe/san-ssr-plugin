@@ -27,6 +27,7 @@ export interface ASTAttr {
 };
 
 export interface ExtractedCssResult {
+    name?: string;
     cssCode: string;
     locals?: Record<string, string> | undefined;
 }

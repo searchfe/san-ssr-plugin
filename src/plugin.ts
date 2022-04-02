@@ -8,7 +8,9 @@ import {callSanSsr} from './lib/callSanSsr';
 import {changeSanFileExtension, autoGetJsTsPath} from './lib/utils';
 import RuleSet from 'webpack/lib/RuleSet';
 import {sanSsrOptions} from './types/san-ssr';
-
+import type {
+    ExtractedCssResult,
+} from './types';
 
 const {
     readFile,
@@ -43,7 +45,16 @@ export interface PluginOptions {
          */
         path: string;
     } & sanSsrOptions;
-    appendRenderFunction?: (styleId: string, css?: string, locals?: Record<string, string>) => string;
+    appendRenderFunction?: (
+        styleId: string,
+        css?: string,
+        locals?: Record<string, string>,
+        namedModuleCss?: Array<{
+            name: string;
+            css?: string;
+            locals?: Record<string, string>;
+        }>
+    ) => string;
 }
 
 export default class SanSSRLoaderPlugin {
@@ -91,7 +102,7 @@ export default class SanSSRLoaderPlugin {
                         );
                         return;
                     }
-                    const styles = styleStore.get(filePath);
+                    const styles = styleStore.get(filePath) as ExtractedCssResult[];
                     const template = templateStore.get(filePath)?.[0];
 
                     const tsRes = compileSanToTs(
@@ -276,6 +287,3 @@ function addSanLoader(compiler: Compiler) {
         }
     }
 }
-
-
-

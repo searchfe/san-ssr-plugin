@@ -32,7 +32,7 @@ test('Must ts', async () => {
     try {
         stats = await compiler('must-ts.san');
     }
-    catch (e) {
+    catch (e: any) {
         mockFunction();
         expect(e.message).toBe('.san file must be written in TypeScript!');
     }
