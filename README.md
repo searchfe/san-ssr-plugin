@@ -83,7 +83,16 @@ if (css) {
 ```javascript
 plugins: [
     new SanSsrPlugin({
-        appendRenderFunction(styleId: string, css: string = '', locals: Record<string, string>) {
+        appendRenderFunction(
+            styleId: string,
+            css: string = '',
+            locals: Record<string, string>,
+            namedModuleCss: Array<{
+                name: string;
+                css?: string;
+                locals?: Record<string, string>;
+            }> = []
+        ) {
             return ``;
         }
     })
@@ -99,5 +108,3 @@ plugins: [
 ## 如何贡献
 
 ## 讨论 -->
-
-
