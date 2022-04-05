@@ -24,7 +24,7 @@ test('Run', async () => {
     const output = stats.toJson().modules[0].source;
 
     expect(!!output).toBe(true);
-});
+}, 10000);
 
 test('Must ts', async () => {
     const mockFunction = jest.fn();
@@ -41,3 +41,14 @@ test('Must ts', async () => {
 
     expect(!stats).toBe(true);
 });
+
+test('name module on style tag', async () => {
+    const {
+        stats,
+        outputContent
+    } = await compiler('index.san');
+
+    expect(!!stats).toBe(true);
+
+    expect(outputContent).toMatchSnapshot();
+}, 10000);

@@ -10,10 +10,20 @@
         background: url(./bbb.svg)
     }
 </style>
+<style module="tools1">
+.c-tools {
+    color: red;
+}
+</style>
+<style module="tools2">
+.c-tools {
+    color: blue;
+}
+</style>
 <template>
 <div>
     <h3 class="t">
-        <a href="{{ titleUrl | raw }}" 
+        <a href="{{ titleUrl | raw }}"
             data-click="{
                 'F':'{{ classicInfo.strategyStr[0] }}',
                 'F1':'{{ classicInfo.strategyStr[1] }}',
@@ -26,9 +36,9 @@
             target="_blank">
             {{ title | hilight:2 | raw }}
         </a>
-        <a s-if="officialFlag" 
-            href="http://trust.baidu.com/vstar/official/intro?type=gw" 
-            target="_blank" 
+        <a s-if="officialFlag"
+            href="http://trust.baidu.com/vstar/official/intro?type=gw"
+            target="_blank"
             class="OP_LOG_LINK c-text c-text-public c-text-mult c-gap-icon-left">
             官方
         </a>
@@ -37,18 +47,18 @@
         <a target="_blank" href="{{ titleUrl | raw }}" class="c-showurl">
             {{ showUrl }}asdasdasd
         </a>
-        <div class="c-tools" 
-            id="{{ toolsId }}" 
+        <div class="c-tools"
+            id="{{ toolsId }}"
             data-tools='{"title":"{{ title }}","url":"{{ titleUrl }}"}'>
             <a class="c-tip-icon">
                 <i class="c-icon c-icon-triangle-down-g"></i>
             </a>
         </div>
         <span s-if="kbShowStyle" class="c-pingjia">&nbsp;-&nbsp;
-            <a href="{{ kbUrl|raw }}" 
-                target="_blank" 
-                class="m" 
-                data-click="{'rsv_comments':'1'}" 
+            <a href="{{ kbUrl|raw }}"
+                target="_blank"
+                class="m"
+                data-click="{'rsv_comments':'1'}"
                 data-from="{{ kbFrom }}">
                 {{ kbShowStyle }}
             </a>

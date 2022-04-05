@@ -64,6 +64,7 @@
     "less-loader": "^7.0.2",
     "lint-staged": "^10.0.0",
     "memfs": "^3.2.0",
+    "san": "~3.11.2",
     "san-loader": "^0.3.4",
     "san-ssr": ">1.0.0",
     "semantic-release": "^17.3.4",
