@@ -52,6 +52,13 @@ npm run test
 san-ssr 本身不负责样式的处理。本插件通过封装 san-ssr 产物（render 函数）的形式处理样式产物：
 
 ```javascript
+css = namedModuleCss.reduce((acc, cur) => {
+    if (cur.css) {
+        acc += `\n${cur.css}`;
+    }
+    return acc;
+}, css);
+
 if (css) {
     code += 'const originSanSSRRenders = module.exports.sanSSRRenders;\n';
     code += 'Object.keys(originSanSSRRenders).forEach(renderName => {\n';
@@ -70,6 +77,17 @@ if (css) {
         ).join(',')}\n`;
         code += '        };\n';
     }
+    namedModuleCss.forEach(({name, locals}) => {
+        if (locals) {
+            if (Object.keys(locals).length > 0) {
+                code += `        data[\'$${name}\'] = {\n`;
+                code += `            ${Object.keys(locals).map(item =>
+                    `${JSON.stringify(item)}: ${JSON.stringify(locals[item])}`
+                ).join(',')}\n`;
+                code += '        };\n';
+            }
+        }
+    });
     code += '        return originRender(data, ...params);\n';
     code += '    };\n';
     code += '}\n';
