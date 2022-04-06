@@ -50,5 +50,5 @@ test('name module on style tag', async () => {
 
     expect(!!stats).toBe(true);
 
-    expect(outputContent).toMatchSnapshot();
+    expect(outputContent).toMatch(/data\[\'\$(style|tools1|tools2)\'\]/g);
 }, 10000);
