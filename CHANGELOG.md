@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.4...v1.5.0) (2022-04-06)
+
+
+### Bug Fixes
+
+* add ut for named module on style tag ([8bad397](https://github.com/searchfe/san-ssr-plugin/commit/8bad397c891e4ddf0016d1ea7fe18383c52e8439))
+
+
+### Features
+
+* split name module style block ([da0a0aa](https://github.com/searchfe/san-ssr-plugin/commit/da0a0aa6a0d52fc0b9032f5719d489fe372cc074))
+
 ## [1.4.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.3...v1.4.4) (2022-01-25)
 
 
