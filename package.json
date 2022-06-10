@@ -67,7 +67,7 @@
     "san": "~3.11.2",
     "san-loader": "^0.3.4",
     "san-ssr": ">1.0.0",
-    "semantic-release": "^17.3.4",
+    "semantic-release": "^19.0.3",
     "semantic-release-cli": "^5.4.2",
     "style-loader": "^2.0.0",
     "stylelint": "^13.0.0",
