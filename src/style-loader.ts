@@ -77,7 +77,14 @@ function extractCssResult(content: string, loaderContext: loader.LoaderContext, 
 
                 // 这里严重依赖 file-loader 的输出格式:
                 // export default __webpack_public_path__ + 'file-name.svg';
-                eval(source.replace(/^export default/, 'path ='));
+                // module.exports = __webpack_public_path__ + 'path/to/sth.eot';
+
+                const reg = /^(export default|module.exports =)/;
+
+                // 匹配成功再赋值，防止把模块导出为字符串 `module.exports = __webpack_public_path__ + 'path/to/sth.eot';`
+                if (reg.test(source)) {
+                    eval(source.replace(reg, 'path ='));
+                }
 
                 fileMap[req] = path;
                 resolve();
