@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.0...v1.5.1) (2022-08-10)
+
+
+### Bug Fixes
+
+* style loader export error ([4abf9db](https://github.com/searchfe/san-ssr-plugin/commit/4abf9dbb88835b71765367406de084337087cea2))
+
 # [1.5.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.4.4...v1.5.0) (2022-04-06)
 
 
