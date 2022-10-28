@@ -91,7 +91,7 @@ export default class SanSSRLoaderPlugin {
             const reportError = (err: Error) => compilation.errors.push(err);
 
             compilation.hooks.finishModules.tapPromise(id, async () => {
-                const sanFiles = styleStore.getKeys();
+                const sanFiles = templateStore.getKeys();
                 for (const filePath of sanFiles) {
                     const sanFileContent = await readFile(filePath, 'utf-8');
                     const descriptor = parseComponent(sanFileContent);
