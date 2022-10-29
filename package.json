@@ -1,6 +1,6 @@
 {
   "name": "san-ssr-plugin",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "",
   "main": "dist/plugin.js",
   "scripts": {

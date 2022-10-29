@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.1...v1.5.2) (2022-10-29)
+
+
+### Bug Fixes
+
+* importing css file leads to error ([#17](https://github.com/searchfe/san-ssr-plugin/issues/17)) ([12ba1e0](https://github.com/searchfe/san-ssr-plugin/commit/12ba1e0eedf0bdd5f5cb5e12d4f5931fe4ca298d))
+
 ## [1.5.1](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.0...v1.5.1) (2022-08-10)
 
 
