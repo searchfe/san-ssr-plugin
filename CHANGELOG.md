@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.2...v1.5.3) (2023-03-26)
+
+
+### Bug Fixes
+
+* watch san fail ([af210e5](https://github.com/searchfe/san-ssr-plugin/commit/af210e545ea50985b61cef73f4da62871dbd0e8c))
+
 ## [1.5.2](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.1...v1.5.2) (2022-10-29)
 
 
