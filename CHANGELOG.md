@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.3...v1.5.4) (2023-03-26)
+
+
+### Bug Fixes
+
+* san-loader test ([a9b1103](https://github.com/searchfe/san-ssr-plugin/commit/a9b110387dab38bf388c57007618d0b63de3c685))
+
 ## [1.5.3](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.2...v1.5.3) (2023-03-26)
 
 
