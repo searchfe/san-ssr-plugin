@@ -25,6 +25,9 @@ export default function (this: loader.LoaderContext, content: string) {
     // 放在上面两个判断的下面，是因为 watch 编译时，不会被编译的文件可能也会走 loader
     // 需要判断 san-loader 是否经过了处理，经过处理时再加入到被处理列表中
     styleStore.set(this.resourcePath);
+    // templateStore.set内容是异步的，导致watch san文件不生效
+    // 因此在此同步将watch文件存起来，只是内容为空，以便 finishModules 的时候，能拿到此模板文件
+    templateStore.set(this.resourcePath);
 
     const pArr = [] as Array<Promise<void>>;
     templateRequireCalls.map(templateRequire => {
