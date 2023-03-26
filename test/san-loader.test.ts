@@ -8,6 +8,7 @@ test('styleStore', async () => {
     const env = {
         resourcePath: '/mock/path',
         _compilation: {
+            _templateStore: new Store() as TemplateStore,
             _styleStore: new Store() as StyleStore
         },
         loadModule: () => 1
