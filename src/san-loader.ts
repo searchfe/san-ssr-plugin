@@ -1,10 +1,10 @@
 import type {TemplateResult} from './store';
 import {noop, extractRequire, getFileLoaderExportPromise, getRootCompilation} from './lib/utils';
 
-import type {loader} from 'webpack';
+import type {LoaderContext} from 'webpack';
 import ___HTML_LOADER_GET_URL_IMPORT___ from 'html-loader/dist/runtime/getUrl';
 
-export default function (this: loader.LoaderContext, content: string) {
+export default function (this: LoaderContext<Record<string, never>>, content: string) {
     const styleStore = getRootCompilation(this._compilation)._styleStore;
     const templateStore = getRootCompilation(this._compilation)._templateStore;
 
@@ -52,7 +52,7 @@ export default function (this: loader.LoaderContext, content: string) {
  * @param content loadModule('/path/to/example.san?lang=html&san=&type=template') 产出的 string
  */
 
-function extractTemplatePromise(this: loader.LoaderContext, source: string): Promise<TemplateResult> {
+function extractTemplatePromise(this: LoaderContext<Record<string, never>>, source: string): Promise<TemplateResult> {
     const pArr = [] as Array<Promise<void>>;
     const fileMap = {} as Record<string, string>;
     const res = {} as any;

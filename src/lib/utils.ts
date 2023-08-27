@@ -1,6 +1,6 @@
 import {existsSync} from 'fs';
-import type {loader} from 'webpack';
 import type {StyleStore, TemplateStore} from '../store';
+import type {LoaderContext} from 'webpack';
 
 export function makeSet(list: string[], expectsLowerCase?: boolean) {
     const s = new Set(list);
@@ -44,7 +44,7 @@ export function extractRequire(content: string): string[] {
     return filterdModules;
 }
 
-export function getFileLoaderExportPromise(this: loader.LoaderContext, req: string) {
+export function getFileLoaderExportPromise(this: LoaderContext<any>, req: string) {
     return new Promise<string>((resolve, reject) => {
         this.loadModule(req, (err, source) => {
             if (err) {
@@ -54,7 +54,7 @@ export function getFileLoaderExportPromise(this: loader.LoaderContext, req: stri
 
             // __webpack_public_path__ 在下面 eval 的时候会用到
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const __webpack_public_path__ = this._compiler.options.output?.publicPath || '';
+            const __webpack_public_path__ = this._compiler?.options.output?.publicPath || '';
             let path = '';
 
             // 这里严重依赖 file-loader 的输出格式:

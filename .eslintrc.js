@@ -10,6 +10,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/no-use-before-define': 'off',
+        '@typescript-eslint/init-declarations': 'off',
         '@typescript-eslint/prefer-regexp-exec': 'off',
         'comma-dangle': 'off',
         'no-eval': 'off'

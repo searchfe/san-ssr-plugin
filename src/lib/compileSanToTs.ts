@@ -5,6 +5,7 @@ import type {
     CompileTsOptions,
 } from '../types';
 import {changeSanFileExtension} from './utils';
+import {WebpackError} from 'webpack';
 
 const declareContextCode = '';
 
@@ -13,7 +14,7 @@ export function compileSanToTs(
     filePath: string,
     context: string,
     template: string | undefined,
-    reportError: (err: Error) => void
+    reportError: (err: WebpackError) => void
 ) {
     const scripts = descriptor.script?.content;
 
@@ -47,7 +48,7 @@ function compileTypescript(content: string, filePath: string, options: CompileTs
     }
 
     if (!codeSnippet.exportedClass) {
-        reportError && reportError(new Error(`Export default class not found in [${filePath}].`));
+        reportError && reportError(new WebpackError(`Export default class not found in [${filePath}].`));
         return '';
     }
     processSanClass(codeSnippet.exportedClass, options.template);
@@ -107,7 +108,7 @@ function processImport(ndoes: ts.ImportDeclaration[]) {
         if (moduleSpecifier && moduleSpecifier.kind === ts.SyntaxKind.StringLiteral) {
 
             // @ts-ignore
-            node.moduleSpecifier = ts.createStringLiteral(
+            node.moduleSpecifier = ts.factory.createStringLiteral(
                 (moduleSpecifier as ts.StringLiteral).text.replace(/.san$/, '')
             );
         }
@@ -118,8 +119,8 @@ function processSanClass(
     node: ts.ClassDeclaration,
     template?: string
 ) {
-    const templateMemeber = ts.createProperty(
-        undefined, undefined, 'template', undefined, undefined, ts.createIdentifier(JSON.stringify(template))
+    const templateMemeber = ts.factory.createPropertyDeclaration(
+        undefined, 'template', undefined, undefined, ts.factory.createIdentifier(JSON.stringify(template))
     );
 
     // @ts-ignore
