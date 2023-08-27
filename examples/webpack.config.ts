@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import SanLoaderPlugin from 'san-loader/lib/plugin';
 import SanPhpLoaderPlugin from '../src/plugin';
-import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 
 const mode: webpack.Configuration['mode'] = 'development';
 
@@ -14,6 +13,7 @@ export default {
         // filename: 'app/[name].js',
         // // path: path.resolve(__dirname, './dist')
         publicPath: 'https://www.baidu.com',
+        clean: true
     },
     mode,
     plugins: [
@@ -27,7 +27,6 @@ export default {
             },
         }),
         new SanLoaderPlugin(),
-        new CleanWebpackPlugin(),
     ],
     resolve: {
         extensions: ['.js', '.ts', '.san', '.json'],
@@ -45,7 +44,7 @@ export default {
             },
             {
                 test: /\.svg$/,
-                loader: 'file-loader',
+                type: 'asset/resource'
             },
             {
                 test: /.(less|css)$/,

@@ -7,6 +7,7 @@ import type {
     ExtractedCssResult,
 } from '../types';
 import type {sanSsrOptions} from '../types/san-ssr';
+import {WebpackError} from 'webpack';
 
 export function callSanSsr(
     tsFile: {
@@ -16,7 +17,7 @@ export function callSanSsr(
     styles: ExtractedCssResult[] | undefined,
     context: string,
     sanSsrOptions: sanSsrOptions,
-    reportError: (err: Error) => void,
+    reportError: (err: WebpackError) => void,
     options?: {
         tsConfigPath?: string;
         appendRenderFunction?: typeof makeCustomRenderFunction;
@@ -27,7 +28,7 @@ export function callSanSsr(
         appendRenderFunction = makeCustomRenderFunction
     } = options || {};
     if (!tsFile.content) {
-        reportError(new Error('Ts code must be specified'));
+        reportError(new WebpackError('Ts code must be specified'));
         return;
     }
 
@@ -40,7 +41,7 @@ export function callSanSsr(
             });
         }
         else {
-            Object.assign(pre.defaultStyle.locals, cur.locals);
+            Object.assign(pre.defaultStyle.locals!, cur.locals);
             pre.defaultStyle.cssCode += ('\n' + cur.cssCode);
         }
         return pre;
@@ -114,6 +115,7 @@ function call(
     return targetCode;
 
     function getDefaultTSConfigPath(dir: string) {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const filepath = path.resolve(dir, 'tsconfig.json');
             if (fs.existsSync(filepath)) {

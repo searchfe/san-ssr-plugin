@@ -1,4 +1,4 @@
-import type {loader} from 'webpack';
+import type {LoaderContext} from 'webpack';
 import ___CSS_LOADER_GET_URL_IMPORT___ from 'css-loader/dist/runtime/getUrl';
 import {getRootCompilation} from './lib/utils';
 
@@ -9,7 +9,7 @@ interface CssRes {
     };
 };
 
-export default function (this: loader.LoaderContext, content: string) {
+export default function (this: LoaderContext<Record<string, never>>, content: string) {
     const callback = this.async();
 
     checkIsAfterCssLoader(this);
@@ -33,11 +33,11 @@ export default function (this: loader.LoaderContext, content: string) {
  *
  * @param loaderContext
  */
-function checkIsAfterCssLoader(loaderContext: loader.LoaderContext) {
+function checkIsAfterCssLoader(loaderContext: LoaderContext<Record<string, never>>) {
     const currentIndex = loaderContext.loaderIndex;
     const beforeLoader = loaderContext.loaders[currentIndex + 1];
     if (!beforeLoader || !beforeLoader.path.includes('css-loader')) {
-        loaderContext.emitError('San-loader-php must be set after css-loader!');
+        loaderContext.emitError(new Error('San-loader-php must be set after css-loader!'));
         return false;
     }
 
@@ -49,7 +49,11 @@ function checkIsAfterCssLoader(loaderContext: loader.LoaderContext) {
  *
  * @param content css-loader 产出的 string
  */
-function extractCssResult(content: string, loaderContext: loader.LoaderContext, callback: (res: CssRes) => void) {
+function extractCssResult(
+    content: string,
+    loaderContext: LoaderContext<Record<string, never>>,
+    callback: (res: CssRes) => void
+) {
     const fileMap = {} as Record<string, string>;
     const m = content.match(/require\(['"](.*)['"]\)/g)?.map(item => {
         const r = item.match(/require\(['"](.*)['"]\)/);
@@ -72,7 +76,7 @@ function extractCssResult(content: string, loaderContext: loader.LoaderContext, 
 
                 // __webpack_public_path__ 在下面 eval 的时候会用到
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const __webpack_public_path__ = loaderContext._compiler.options.output?.publicPath || '';
+                const __webpack_public_path__ = loaderContext._compiler?.options.output?.publicPath || '';
                 let path = '';
 
                 // 这里严重依赖 file-loader 的输出格式:

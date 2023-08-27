@@ -1,3 +1,5 @@
+import {WebpackError} from 'webpack';
+
 export interface SFCBlock {
     type: string;
     content: string;
@@ -36,5 +38,5 @@ export interface CompileTsOptions {
     tsFilePath: string;
     context: string;
     template?: string;
-    reportError?: (err: Error) => void;
+    reportError?: (err: WebpackError) => void;
 }

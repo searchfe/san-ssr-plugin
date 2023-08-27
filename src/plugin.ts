@@ -1,20 +1,62 @@
 import {Store, StyleStore, TemplateStore} from './store';
-import type {Compiler, RuleSetRule} from 'webpack';
+import {WebpackError, type Compiler, RuleSetRule} from 'webpack';
 import {promises as fsPromise} from 'fs';
 import {parseComponent} from './lib/parseComponent';
 import {compileSanToTs} from './lib/compileSanToTs';
 import path from 'path';
 import {callSanSsr} from './lib/callSanSsr';
 import {changeSanFileExtension, autoGetJsTsPath} from './lib/utils';
-import RuleSet from 'webpack/lib/RuleSet';
 import {sanSsrOptions} from './types/san-ssr';
 import type {
     ExtractedCssResult,
 } from './types';
+import RuleSetCompiler from 'webpack/lib/rules/RuleSetCompiler';
+import BasicMatcherRulePlugin from 'webpack/lib/rules/BasicMatcherRulePlugin';
+import BasicEffectRulePlugin from 'webpack/lib/rules/BasicEffectRulePlugin';
+import UseEffectRulePlugin from 'webpack/lib/rules/UseEffectRulePlugin';
 
 const {
     readFile,
 } = fsPromise;
+
+let objectMatcherRulePlugins = [];
+try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    const ObjectMatcherRulePlugin = require('webpack/lib/rules/ObjectMatcherRulePlugin');
+    objectMatcherRulePlugins.push(
+        new ObjectMatcherRulePlugin('assert', 'assertions'),
+        new ObjectMatcherRulePlugin('descriptionData')
+    );
+}
+catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    const DescriptionDataMatcherRulePlugin = require('webpack/lib/rules/DescriptionDataMatcherRulePlugin');
+    objectMatcherRulePlugins.push(new DescriptionDataMatcherRulePlugin());
+}
+
+const ruleSetCompiler = new RuleSetCompiler([
+    new BasicMatcherRulePlugin('test', 'resource'),
+    new BasicMatcherRulePlugin('mimetype'),
+    new BasicMatcherRulePlugin('dependency'),
+    new BasicMatcherRulePlugin('include', 'resource'),
+    new BasicMatcherRulePlugin('exclude', 'resource', true),
+    new BasicMatcherRulePlugin('conditions'),
+    new BasicMatcherRulePlugin('resource'),
+    new BasicMatcherRulePlugin('resourceQuery'),
+    new BasicMatcherRulePlugin('resourceFragment'),
+    new BasicMatcherRulePlugin('realResource'),
+    new BasicMatcherRulePlugin('issuer'),
+    new BasicMatcherRulePlugin('compiler'),
+    new BasicMatcherRulePlugin('issuerLayer'),
+    ...objectMatcherRulePlugins,
+    new BasicEffectRulePlugin('type'),
+    new BasicEffectRulePlugin('sideEffects'),
+    new BasicEffectRulePlugin('parser'),
+    new BasicEffectRulePlugin('resolve'),
+    new BasicEffectRulePlugin('generator'),
+    new BasicEffectRulePlugin('layer'),
+    new UseEffectRulePlugin()
+]);
 
 const id = 'san-ssr-loader';
 export interface PluginOptions {
@@ -88,7 +130,7 @@ export default class SanSSRLoaderPlugin {
             // @ts-ignore
             compilation._templateStore = templateStore;
 
-            const reportError = (err: Error) => compilation.errors.push(err);
+            const reportError = (err: WebpackError) => compilation.errors.push(err);
 
             compilation.hooks.finishModules.tapPromise(id, async () => {
                 const sanFiles = templateStore.getKeys();
@@ -98,7 +140,7 @@ export default class SanSSRLoaderPlugin {
 
                     if (descriptor.script && descriptor.script.lang !== 'ts') {
                         compilation.errors.push(
-                            new Error('.san file must be written in TypeScript!')
+                            new WebpackError('.san file must be written in TypeScript!')
                         );
                         return;
                     }
@@ -157,7 +199,7 @@ export default class SanSSRLoaderPlugin {
 }
 
 function getLoaderByMatch(compiler: Compiler, matchExtension: string) {
-    const rawRules = compiler.options.module?.rules;
+    const rawRules = compiler.options.module?.rules as RuleSetRule[];
     if (!rawRules) {
         throw Error('Webpack rules are not found!');
     }
@@ -169,13 +211,17 @@ function getLoaderByMatch(compiler: Compiler, matchExtension: string) {
 
     function createMatcher(fakeFile: string) {
         return (rule: RuleSetRule) => {
+            if (rule.enforce) {
+                return false;
+            }
+
             const clone = Object.assign({}, rule);
             delete clone.include;
-            const normalized = RuleSet.normalizeRule(clone, {}, '');
+            const normalized = ruleSetCompiler.compile([clone]);
             return (
-                !rule.enforce
-                && normalized.resource
-                && normalized.resource(fakeFile)
+                normalized.exec({
+                    resource: fakeFile
+                }).length > 0
             );
         };
     }
@@ -217,7 +263,7 @@ function addStyleLoader(compiler: Compiler) {
         addedRules.add(rule);
 
         if (rule.oneOf) {
-            rule.oneOf.forEach(item => addLoader(item));
+            rule.oneOf.forEach(item => addLoader(item as RuleSetRule));
             return;
         }
 
@@ -230,6 +276,9 @@ function addStyleLoader(compiler: Compiler) {
                 rule.use = [rule.use];
             }
             const ruleIndex = rule.use.findIndex(item => {
+                if (!item) {
+                    return false;
+                }
                 if (typeof item === 'string') {
                     return item === 'css-loader';
                 }
@@ -262,7 +311,7 @@ function addSanLoader(compiler: Compiler) {
 
     function addLoader(rule: RuleSetRule) {
         if (rule.oneOf) {
-            rule.oneOf.forEach(item => addLoader(item));
+            rule.oneOf.forEach(item => addLoader(item as RuleSetRule));
             return;
         }
 
