@@ -66,7 +66,7 @@
     "memfs": "^3.2.0",
     "san": "~3.11.2",
     "san-loader": "^0.3.4",
-    "san-ssr": ">1.0.0",
+    "san-ssr": "^3.13.3",
     "semantic-release": "^17.3.4",
     "semantic-release-cli": "^5.4.2",
     "style-loader": "^2.0.0",
