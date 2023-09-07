@@ -1,5 +1,7 @@
 import type {LoaderContext} from 'webpack';
 import ___CSS_LOADER_GET_URL_IMPORT___ from 'css-loader/dist/runtime/getUrl';
+import ___CSS_LOADER_API_IMPORT___ from 'css-loader/dist/runtime/api';
+import ___CSS_LOADER_API_SOURCEMAP_IMPORT___ from 'css-loader/dist/runtime/sourceMaps.js';
 import {getRootCompilation} from './lib/utils';
 
 interface CssRes {
@@ -68,26 +70,10 @@ function extractCssResult(
         }
 
         const p = new Promise<void>((resolve, reject) => {
-            loaderContext.loadModule(req, (err, source) => {
+            loaderContext.importModule(req, {}, (err, path) => {
                 if (err) {
                     reject(err);
                     return;
-                }
-
-                // __webpack_public_path__ 在下面 eval 的时候会用到
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const __webpack_public_path__ = loaderContext._compiler?.options.output?.publicPath || '';
-                let path = '';
-
-                // 这里严重依赖 file-loader 的输出格式:
-                // export default __webpack_public_path__ + 'file-name.svg';
-                // module.exports = __webpack_public_path__ + 'path/to/sth.eot';
-
-                const reg = /^(export default|module.exports =)/;
-
-                // 匹配成功再赋值，防止把模块导出为字符串 `module.exports = __webpack_public_path__ + 'path/to/sth.eot';`
-                if (reg.test(source)) {
-                    eval(source.replace(reg, 'path ='));
                 }
 
                 fileMap[req] = path;
@@ -105,6 +91,14 @@ function extractCssResult(
             mockFunc({}, res, (req: string) => {
                 if (/css\-loader\/dist\/runtime\/getUrl.js/.test(req)) {
                     return ___CSS_LOADER_GET_URL_IMPORT___;
+                }
+
+                if (/css\-loader\/dist\/runtime\/api.js/.test(req)) {
+                    return ___CSS_LOADER_API_IMPORT___;
+                }
+
+                if (/css\-loader\/dist\/runtime\/sourceMaps.js/.test(req)) {
+                    return ___CSS_LOADER_API_SOURCEMAP_IMPORT___;
                 }
 
                 if (fileMap[req]) {

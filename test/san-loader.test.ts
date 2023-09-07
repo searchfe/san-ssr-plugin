@@ -1,11 +1,11 @@
 import sanLoader from '../src/san-loader';
 import {Store, StyleStore, TemplateStore} from '../src/store';
-import type {loader} from 'webpack';
+import type {LoaderContext} from 'webpack';
 
 test('styleStore', async () => {
     const mockAsyncCallback = jest.fn();
 
-    const env = {
+    const mockContext = {
         resourcePath: '/mock/path',
         _compilation: {
             _templateStore: new Store() as TemplateStore,
@@ -16,14 +16,16 @@ test('styleStore', async () => {
     const content = 'require("./mock/content?type=template")';
 
     await new Promise(resolve => {
-        env.async = () => (...args: any[]) => {
+
+        mockContext.async = () => (...args: any[]) => {
             mockAsyncCallback(...args);
             resolve(0);
-        },
-        sanLoader.call(env as unknown as loader.LoaderContext, content);
+        };
+
+        sanLoader.call(mockContext as LoaderContext<Record<string, never>>, content);
     });
 
-    expect(env._compilation._styleStore.get('/mock/path')).toStrictEqual([]);
+    expect(mockContext._compilation._styleStore.get('/mock/path')).toStrictEqual([]);
 
     expect(mockAsyncCallback).toHaveBeenCalledTimes(1);
     expect(mockAsyncCallback.mock.calls[0][1]).toBe(content);
@@ -41,7 +43,7 @@ test('templateStore', () => {
             _templateStore: new Store() as TemplateStore,
             _styleStore: new Store() as StyleStore
         }
-    } as unknown as loader.LoaderContext;
+    } as unknown as LoaderContext<Record<string, never>>;
 
     sanLoader.call(mockLoaderContext, `
     var foo = require("/path/to/foo.ts");
