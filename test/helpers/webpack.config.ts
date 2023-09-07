@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import SanLoaderPlugin from 'san-loader/lib/plugin';
 import SanSsrPlugin, {PluginOptions} from '../../src/plugin';
-// import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 import path from 'path';
 
 const mode: webpack.Configuration['mode'] = 'development';
@@ -12,8 +11,10 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
     const config = {
         entry,
         output: {
+            publicPath: 'https://www.baidu.com/',
             path: path.resolve(__dirname),
             filename: 'bundle.js',
+            clean: true
         },
         mode,
         plugins: [
@@ -39,23 +40,22 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                 },
                 {
                     test: /\.svg$/,
-                    loader: 'file-loader',
+                    type: 'asset/resource'
                 },
                 {
                     test: /.(less|css)$/,
 
                     oneOf: [
-                        // 这里匹配 `<style lang="less" module>`
+                        // 这里匹配 `<style lang="less">`
                         {
-                            resourceQuery: /module/,
                             use: [
-                                'style-loader',
+                                {
+                                    loader: 'style-loader',
+                                },
                                 {
                                     loader: 'css-loader',
                                     options: {
-                                        modules: true,
                                         sourceMap: true,
-                                        localsConvention: 'camelCase',
                                     },
                                 },
                                 {
@@ -66,15 +66,18 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                                 },
                             ],
                         },
-                        // 这里匹配 `<style lang="less">`
+                        // 这里匹配 `<style lang="less" module>`
                         {
+                            resourceQuery: /module/,
                             use: [
-                                {
-                                    loader: 'style-loader',
-                                },
+                                'style-loader',
                                 {
                                     loader: 'css-loader',
                                     options: {
+                                        esModule: false,
+                                        modules: {
+                                            exportLocalsConvention: 'camelCase',
+                                        },
                                         sourceMap: true,
                                     },
                                 },
@@ -126,9 +129,12 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                 {
                     test: /\.html$/,
                     loader: 'html-loader',
+                    options: {
+                        esModule: false,
+                    }
                 },
             ],
         },
-    };
+    } as webpack.Configuration;
     return config;
 };

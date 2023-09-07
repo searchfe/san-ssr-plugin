@@ -46,20 +46,12 @@ export function extractRequire(content: string): string[] {
 
 export function getFileLoaderExportPromise(this: LoaderContext<any>, req: string) {
     return new Promise<string>((resolve, reject) => {
-        this.loadModule(req, (err, source) => {
+        this.importModule(req, {}, (err, path) => {
             if (err) {
                 reject(err);
                 return;
             }
 
-            // __webpack_public_path__ 在下面 eval 的时候会用到
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const __webpack_public_path__ = this._compiler?.options.output?.publicPath || '';
-            let path = '';
-
-            // 这里严重依赖 file-loader 的输出格式:
-            // export default __webpack_public_path__ + 'file-name.svg';
-            eval(source.replace(/^export default/, 'path ='));
             resolve(path);
         });
     });

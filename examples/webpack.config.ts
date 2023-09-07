@@ -12,7 +12,7 @@ export default {
     output: {
         // filename: 'app/[name].js',
         // // path: path.resolve(__dirname, './dist')
-        publicPath: 'https://www.baidu.com',
+        publicPath: 'https://www.baidu.com/',
         clean: true
     },
     mode,
@@ -50,17 +50,16 @@ export default {
                 test: /.(less|css)$/,
 
                 oneOf: [
-                    // 这里匹配 `<style lang="less" module>`
+                    // 这里匹配 `<style lang="less">`
                     {
-                        resourceQuery: /module/,
                         use: [
-                            'style-loader',
+                            {
+                                loader: 'style-loader',
+                            },
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    modules: true,
                                     sourceMap: true,
-                                    localsConvention: 'camelCase',
                                 },
                             },
                             {
@@ -71,15 +70,19 @@ export default {
                             },
                         ],
                     },
-                    // 这里匹配 `<style lang="less">`
+                    // 这里匹配 `<style lang="less" module>`
                     {
+                        resourceQuery: /module/,
                         use: [
-                            {
-                                loader: 'style-loader',
-                            },
+                            'style-loader',
                             {
                                 loader: 'css-loader',
                                 options: {
+                                    esModule: false,
+                                    modules: {
+                                        exportLocalsConvention: 'camelCase',
+                                        namedExport: false,
+                                    },
                                     sourceMap: true,
                                 },
                             },
@@ -131,6 +134,10 @@ export default {
             {
                 test: /\.html$/,
                 loader: 'html-loader',
+                options: {
+                    esModule: false,
+                    minimize: false,
+                }
             },
         ],
     },

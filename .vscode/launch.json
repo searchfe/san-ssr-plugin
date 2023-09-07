@@ -6,7 +6,8 @@
     "configurations": [
         {
             "args": [
-                "san-loader.test.ts"
+                // "san-loader.test.ts"
+                "index"
             ],
             "name": "jest task",
             "program": "${workspaceFolder}/node_modules/.bin/jest",
@@ -14,7 +15,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "pwa-node"
+            "type": "node"
         },
     {
         "name": "Launch Program",
