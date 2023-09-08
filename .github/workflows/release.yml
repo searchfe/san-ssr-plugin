@@ -6,7 +6,7 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,11 +15,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - name: Install dependencies
-        run: npm ci
+          node-version: 20
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: |
+            - args: [--frozen-lockfile]
       - name: Build
-        run: npm run build
+        run: pnpm run build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
