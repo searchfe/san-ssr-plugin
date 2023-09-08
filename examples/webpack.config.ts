@@ -137,6 +137,7 @@ export default {
                 options: {
                     esModule: false,
                     minimize: false,
+                    sources: false,
                 }
             },
         ],

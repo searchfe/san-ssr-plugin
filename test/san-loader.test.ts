@@ -35,9 +35,13 @@ test('templateStore', () => {
     const mockLoadModule = jest.fn();
 
 
+    const resourcePath = '/path/to/foo.san';
+    const resourceQuery = '?lang=html&san=&type=template';
     const mockLoaderContext = {
         async: jest.fn(),
-        resourcePath: '/path/to/foo.san',
+        resourcePath,
+        resourceQuery,
+        resource: resourcePath + resourceQuery,
         loadModule: (...args: any[]) => mockLoadModule(...args),
         _compilation: {
             _templateStore: new Store() as TemplateStore,
@@ -46,14 +50,12 @@ test('templateStore', () => {
     } as unknown as LoaderContext<Record<string, never>>;
 
     sanLoader.call(mockLoaderContext, `
-    var foo = require("/path/to/foo.ts");
+    <div></div>
     `);
 
     expect(mockLoadModule).not.toHaveBeenCalled();
 
-    sanLoader.call(mockLoaderContext, `
-    var template = require("/path/to/foo.san?lang=html&san=&type=template");
-    `);
+    sanLoader.call(mockLoaderContext, []);
 
     expect(mockLoadModule).toHaveBeenCalledTimes(1);
     expect(mockLoadModule.mock.calls[0][0]).toBe('/path/to/foo.san?lang=html&san=&type=template&compileTemplate=none');
