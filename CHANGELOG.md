@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.4...v2.0.0) (2023-09-08)
+
+
+### Features
+
+* support css-loader ^6.8.1 ([d00951d](https://github.com/searchfe/san-ssr-plugin/commit/d00951d1341d2f1e7c488056f46fefdc2d1d177d))
+* support html-loader ^4.2.0 ([d86df1a](https://github.com/searchfe/san-ssr-plugin/commit/d86df1a206f6eb4950fadff2a510b911f7a41257))
+* support webpack v5 ([6ad4930](https://github.com/searchfe/san-ssr-plugin/commit/6ad4930798dd66c2fd31341c30e409f5a336e658))
+
+
+### BREAKING CHANGES
+
+* webpack v4 is not supported, use lower version (v1)
+instead.
+
 ## [1.5.4](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.3...v1.5.4) (2023-03-26)
 
 
