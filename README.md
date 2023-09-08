@@ -126,3 +126,24 @@ plugins: [
 ## 如何贡献
 
 ## 讨论 -->
+
+## Webpack V5
+
+1. html-loader 2 以上版本，与 san-loader 的 `compileTemplate: 'aPack'` 配合使用时，需要将 html-loader 的 sources 选项设置为 false，同时 HTML 中的静态资源无法再自动处理。需要等待 san-loader 适配。
+
+2. html-loader 与 css-loader 目前默认会输出 esModule 格式的内容，san-loader 与 san-ssr-plugin 都不支持这种写法，需要手动设置 `esModule: false`:
+
+    ```javascript
+    {
+        loader: 'css-loader',
+        options: {
+            esModule: false,
+        },
+    },
+    {
+        loader: 'html-loader',
+        options: {
+            esModule: false,
+        }
+    },
+    ```

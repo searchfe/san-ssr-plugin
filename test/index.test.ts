@@ -42,6 +42,7 @@ test('name module on style tag', async () => {
     } = await compiler('index.san');
 
     expect(!!stats).toBe(true);
+    expect(stats?.hasErrors()).toBe(false);
 
     expect(outputContent).toMatch(/data\[\'\$(style|tools1|tools2)\'\]/g);
 }, 10000);
