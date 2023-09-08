@@ -36,7 +36,12 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
             rules: [
                 {
                     test: /\.san$/,
-                    loader: 'san-loader',
+                    use: {
+                        loader: 'san-loader',
+                        options: {
+                            compileTemplate: 'aPack'
+                        }
+                    }
                 },
                 {
                     test: /\.svg$/,
@@ -131,6 +136,8 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                     loader: 'html-loader',
                     options: {
                         esModule: false,
+                        minimize: false,
+                        sources: false,
                     }
                 },
             ],
