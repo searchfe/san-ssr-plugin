@@ -44,6 +44,9 @@ export default {
 ## 测试
 
 ```shell
+# 安装：
+npm install --registry https://registry.npmjs.org/
+# 单测：
 npm run test
 ```
 

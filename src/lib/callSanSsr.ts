@@ -40,7 +40,7 @@ export function callSanSsr(
             });
         }
         else {
-            Object.assign(pre.defaultStyle.locals, cur.locals);
+            Object.assign(pre.defaultStyle.locals!, cur.locals);
             pre.defaultStyle.cssCode += ('\n' + cur.cssCode);
         }
         return pre;
