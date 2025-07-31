@@ -107,7 +107,7 @@ function processImport(ndoes: ts.ImportDeclaration[]) {
         if (moduleSpecifier && moduleSpecifier.kind === ts.SyntaxKind.StringLiteral) {
 
             // @ts-ignore
-            node.moduleSpecifier = ts.createStringLiteral(
+            node.moduleSpecifier = ts.factory.createStringLiteral(
                 (moduleSpecifier as ts.StringLiteral).text.replace(/.san$/, '')
             );
         }
@@ -118,8 +118,8 @@ function processSanClass(
     node: ts.ClassDeclaration,
     template?: string
 ) {
-    const templateMemeber = ts.createProperty(
-        undefined, undefined, 'template', undefined, undefined, ts.createIdentifier(JSON.stringify(template))
+    const templateMemeber = ts.factory.createPropertyDeclaration(
+        undefined, 'template', undefined, undefined, ts.factory.createIdentifier(JSON.stringify(template))
     );
 
     // @ts-ignore
