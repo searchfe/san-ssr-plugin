@@ -36,6 +36,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
     "@ecomfe/eslint-config": "^4.0.0",
     "@ecomfe/stylelint-config": "^1.0.0",
     "@semantic-release/changelog": "^5.0.1",

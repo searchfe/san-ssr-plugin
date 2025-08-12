@@ -102,6 +102,7 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                                 [
                                     '@babel/plugin-proposal-class-properties',
                                 ],
+                                ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}],
                             ],
                         },
                     },
@@ -119,6 +120,7 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
                                 [
                                     '@babel/plugin-proposal-class-properties',
                                 ],
+                                ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}],
                             ],
                         },
                     },

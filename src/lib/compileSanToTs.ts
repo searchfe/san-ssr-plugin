@@ -91,10 +91,11 @@ function getCodeSnippet(node: ts.Node) {
     };
 
     function isExportDefaultClass(node: ts.ClassDeclaration) {
-        return node.modifiers
-            && node.modifiers.length === 2
-            && node.modifiers[0].kind === ts.SyntaxKind.ExportKeyword
-            && node.modifiers[1].kind === ts.SyntaxKind.DefaultKeyword;
+        if (!node.modifiers?.length) {
+            return false;
+        }
+        const exportIndex = node.modifiers.findIndex(modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
+        return exportIndex >= 0 && node.modifiers[exportIndex + 1]?.kind === ts.SyntaxKind.DefaultKeyword;
     }
 
 }

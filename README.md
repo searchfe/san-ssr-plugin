@@ -45,7 +45,7 @@ export default {
 
 ```shell
 # 安装：
-npm install --registry https://registry.npmjs.org/
+npm install --legacy-peer-deps --registry https://registry.npmjs.org/
 # 单测：
 npm run test
 ```
