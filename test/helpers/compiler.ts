@@ -28,7 +28,8 @@ export function compiler(fixture: string, options: Partial<PluginOptions> = {}):
                 return;
             }
 
-            const outputContent = fileSys.readFileSync('./test/helpers/php/test/samples/index.js', 'utf-8') as string;
+            const outputContent = fileSys.readFileSync(
+                './test/helpers/php/test/samples/' + fixture.replace(/\.san$/, '.js'), 'utf-8') as string;
             resolve({stats, outputContent});
         });
     });
