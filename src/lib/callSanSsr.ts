@@ -129,6 +129,27 @@ function call(
     }
 }
 
+/**
+ * Helper function to generate CSS locals object code
+ *
+ * @param varName The variable name to assign (e.g., '$style', '$moduleName')
+ * @param locals The CSS locals object
+ * @returns Generated code string
+ */
+function generateLocalsCode(varName: string, locals: Record<string, string>): string {
+    if (Object.keys(locals).length === 0) {
+        return '';
+    }
+
+    let code = '';
+    code += `        data['${varName}'] = {\n`;
+    code += `            ${Object.keys(locals).map(item =>
+        `${JSON.stringify(item)}: ${JSON.stringify(locals[item])}`
+    ).join(',')}\n`;
+    code += '        };\n';
+    return code;
+}
+
 function makeCustomRenderFunction(
     styleId: string,
     css: string = '',
@@ -160,22 +181,10 @@ function makeCustomRenderFunction(
         code += '        if (global.__COMPONENT_CONTEXT__) {\n';
         code += `            global.__COMPONENT_CONTEXT__[${styleId}] = ${JSON.stringify(css)};\n`;
         code += '        }\n';
-        if (Object.keys(locals).length > 0) {
-            code += '        data[\'$style\'] = {\n';
-            code += `            ${Object.keys(locals).map(item =>
-                `${JSON.stringify(item)}: ${JSON.stringify(locals[item])}`
-            ).join(',')}\n`;
-            code += '        };\n';
-        }
+        code += generateLocalsCode('$style', locals);
         namedModuleCss.forEach(({name, locals}) => {
             if (locals) {
-                if (Object.keys(locals).length > 0) {
-                    code += `        data[\'$${name}\'] = {\n`;
-                    code += `            ${Object.keys(locals).map(item =>
-                        `${JSON.stringify(item)}: ${JSON.stringify(locals[item])}`
-                    ).join(',')}\n`;
-                    code += '        };\n';
-                }
+                code += generateLocalsCode(`$${name}`, locals);
             }
         });
         code += '        return originRender(data, ...params);\n';
