@@ -1,6 +1,6 @@
 {
   "name": "san-ssr-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1-beta.1",
   "description": "",
   "main": "dist/plugin.js",
   "scripts": {
@@ -34,6 +34,8 @@
     "@babel/core": "^7.22.15",
     "@babel/eslint-parser": "^7.22.15",
     "@babel/eslint-plugin": "^7.22.10",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.29.0",
     "@babel/preset-env": "^7.22.15",
     "@babel/preset-typescript": "^7.22.15",
     "@ecomfe/eslint-config": "^7.5.1",
