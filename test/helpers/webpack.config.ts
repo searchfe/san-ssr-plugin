@@ -36,6 +36,28 @@ export function getConfig(fixture: string, sanSsrPluginOptions: Partial<PluginOp
             rules: [
                 {
                     test: /\.san$/,
+                    resourceQuery: /type=script/,
+                    use: [{
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                '@babel/preset-env',
+                                '@babel/preset-typescript',
+                            ],
+                            plugins: [
+                                ['@babel/plugin-proposal-decorators', {legacy: true}],
+                                ['@babel/plugin-proposal-class-properties'],
+                            ],
+                        },
+                    }, {
+                        loader: 'san-loader',
+                        options: {
+                            compileTemplate: 'aPack'
+                        }
+                    }]
+                },
+                {
+                    test: /\.san$/,
                     use: {
                         loader: 'san-loader',
                         options: {
