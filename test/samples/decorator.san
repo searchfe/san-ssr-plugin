@@ -1,0 +1,28 @@
+<template>
+    <div>
+        <h1>{{ title }}</h1>
+    </div>
+</template>
+
+<script lang="ts">
+import {Component} from 'san';
+
+// 简单的装饰器
+function decorator1(target: any) {
+    return target;
+}
+
+function decorator2(target: any) {
+    return target;
+}
+
+@decorator1
+@decorator2
+export default class DecoratorComponent extends Component {
+    initData() {
+        return {
+            title: 'Decorator Test'
+        };
+    }
+}
+</script>

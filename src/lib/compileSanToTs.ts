@@ -92,10 +92,17 @@ function getCodeSnippet(node: ts.Node) {
     };
 
     function isExportDefaultClass(node: ts.ClassDeclaration) {
-        return node.modifiers
-            && node.modifiers.length === 2
-            && node.modifiers[0].kind === ts.SyntaxKind.ExportKeyword
-            && node.modifiers[1].kind === ts.SyntaxKind.DefaultKeyword;
+        if (!node.modifiers) {
+            return false;
+        }
+
+        const hasExport = node.modifiers
+            .some(modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
+
+        const hasDefault = node.modifiers
+            .some(modifier => modifier.kind === ts.SyntaxKind.DefaultKeyword);
+
+        return hasExport && hasDefault;
     }
 
 }
