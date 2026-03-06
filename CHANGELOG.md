@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/searchfe/san-ssr-plugin/compare/v2.0.0...v2.1.0) (2026-03-06)
+
+
+### Features
+
+* support class decorator ([#31](https://github.com/searchfe/san-ssr-plugin/issues/31)) ([85aba70](https://github.com/searchfe/san-ssr-plugin/commit/85aba7066d06fc802011c040c4b43dc76ee9b155))
+
 # [2.0.0](https://github.com/searchfe/san-ssr-plugin/compare/v1.5.4...v2.0.0) (2023-09-08)
 
 
