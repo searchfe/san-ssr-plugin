@@ -19,7 +19,7 @@ jobs:
           node-version: 20
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 8
           run_install: |
             - args: [--frozen-lockfile]
       - name: Build
