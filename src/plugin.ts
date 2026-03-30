@@ -228,12 +228,108 @@ function getLoaderByMatch(compiler: Compiler, matchExtension: string) {
 }
 
 /**
+ * Helper function to add a loader to a rule with common logic
+ *
+ * @param rule The webpack rule to modify
+ * @param loaderName The name of the loader file (without extension)
+ * @param options Configuration options
+ */
+function createLoaderAdder(
+    loaderName: string,
+    options: {
+        findTargetLoader?: string;
+        insertPosition?: 'before' | 'after' | 'start';
+        errorMessage?: string;
+        normalizeLoader?: boolean;
+        addedRulesSet?: Set<RuleSetRule>;
+    } = {}
+) {
+    const {
+        findTargetLoader,
+        insertPosition = 'start',
+        errorMessage = `${loaderName} rules not support function!`,
+        normalizeLoader = false,
+        addedRulesSet
+    } = options;
+
+    return function addLoader(rule: RuleSetRule): void {
+        // 防止多次添加
+        if (addedRulesSet && addedRulesSet.has(rule)) {
+            return;
+        }
+        if (addedRulesSet) {
+            addedRulesSet.add(rule);
+        }
+
+        if (rule.oneOf) {
+            rule.oneOf.forEach(item => addLoader(item as RuleSetRule));
+            return;
+        }
+
+        // Normalize rule.loader to rule.use
+        if (normalizeLoader && rule.loader) {
+            rule.use = rule.loader;
+            delete rule.loader;
+        }
+
+        if (rule.use) {
+            if (typeof rule.use === 'function') {
+                throw Error(errorMessage);
+            }
+
+            if (!Array.isArray(rule.use)) {
+                rule.use = [rule.use];
+            }
+
+            let loaderPath = path.resolve(__dirname, `./${loaderName}`);
+            loaderPath = autoGetJsTsPath(loaderPath);
+
+            if (findTargetLoader) {
+                // Find the target loader and insert relative to it
+                const targetIndex = rule.use.findIndex(item => {
+                    if (!item) {
+                        return false;
+                    }
+                    if (typeof item === 'string') {
+                        return item === findTargetLoader;
+                    }
+                    if (typeof item === 'function') {
+                        return false;
+                    }
+                    return item.loader === findTargetLoader;
+                });
+
+                if (insertPosition === 'after') {
+                    rule.use.splice(targetIndex + 1, 0, loaderPath);
+                }
+                else {
+                    rule.use.splice(targetIndex, 0, loaderPath);
+                }
+            }
+            else if (insertPosition === 'start') {
+                rule.use.unshift(loaderPath);
+            }
+            else {
+                rule.use.push(loaderPath);
+            }
+        }
+    };
+}
+
+/**
  * 把 ./style-loader 加到 css-loader 后面
  *
  * @param compiler
  */
 function addStyleLoader(compiler: Compiler) {
-    const addedRules = new Set();
+    const addedRules = new Set<RuleSetRule>();
+    const addLoader = createLoaderAdder('style-loader', {
+        findTargetLoader: 'css-loader',
+        insertPosition: 'before',
+        errorMessage: 'Css rules not support function!',
+        addedRulesSet: addedRules
+    });
+
     const cssRule = getLoaderByMatch(compiler, 'css');
     addLoader(cssRule);
 
@@ -254,48 +350,6 @@ function addStyleLoader(compiler: Compiler) {
             addLoader(optRule);
         }
     }
-
-    function addLoader(rule: RuleSetRule) {
-        // 防止多次添加
-        if (addedRules.has(rule)) {
-            return;
-        }
-        addedRules.add(rule);
-
-        if (rule.oneOf) {
-            rule.oneOf.forEach(item => addLoader(item as RuleSetRule));
-            return;
-        }
-
-        if (rule.use) {
-            if (typeof rule.use === 'function') {
-                throw Error('Css rules not support function!');
-            }
-
-            if (!Array.isArray(rule.use)) {
-                rule.use = [rule.use];
-            }
-            const ruleIndex = rule.use.findIndex(item => {
-                if (!item) {
-                    return false;
-                }
-                if (typeof item === 'string') {
-                    return item === 'css-loader';
-                }
-
-                if (typeof item === 'function') {
-                    return false;
-                }
-
-                return item.loader === 'css-loader';
-            });
-
-            let loaderPath = path.resolve(__dirname, './style-loader');
-            loaderPath = autoGetJsTsPath(loaderPath);
-
-            rule.use.splice(ruleIndex, 0, loaderPath);
-        }
-    }
 }
 
 /**
@@ -304,35 +358,12 @@ function addStyleLoader(compiler: Compiler) {
  * @param compiler
  */
 function addSanLoader(compiler: Compiler) {
+    const addLoader = createLoaderAdder('san-loader', {
+        insertPosition: 'start',
+        errorMessage: 'San rules not support function!',
+        normalizeLoader: true
+    });
+
     const cssRule = getLoaderByMatch(compiler, 'san');
     addLoader(cssRule);
-
-    return;
-
-    function addLoader(rule: RuleSetRule) {
-        if (rule.oneOf) {
-            rule.oneOf.forEach(item => addLoader(item as RuleSetRule));
-            return;
-        }
-
-        if (rule.loader) {
-            rule.use = rule.loader;
-            delete rule.loader;
-        }
-
-        if (rule.use) {
-            if (typeof rule.use === 'function') {
-                throw Error('San rules not support function!');
-            }
-
-            if (!Array.isArray(rule.use)) {
-                rule.use = [rule.use];
-            }
-
-            let loaderPath = path.resolve(__dirname, './san-loader');
-            loaderPath = autoGetJsTsPath(loaderPath);
-
-            rule.use.unshift(loaderPath);
-        }
-    }
 }
